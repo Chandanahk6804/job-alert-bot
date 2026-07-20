@@ -1,0 +1,39 @@
+name: Job Alert Bot
+
+on:
+  schedule:
+    # Runs every 30 minutes. GitHub may delay this under load — treat it as
+    # "roughly every 30 min," not exact. Adjust the cron below to change frequency.
+    - cron: '*/30 * * * *'
+  workflow_dispatch: {}   # lets you trigger a run manually from the Actions tab
+
+permissions:
+  contents: write   # needed to commit seen_jobs.json back to the repo
+
+jobs:
+  check-jobs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Run job check
+        env:
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASS: ${{ secrets.SMTP_PASS }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+        run: python main.py
+
+      - name: Commit updated seen_jobs.json
+        run: |
+          git config user.name "job-alert-bot"
+          git config user.email "actions@github.com"
+          git add seen_jobs.json
+          git diff --staged --quiet || git commit -m "Update seen jobs [skip ci]"
+          git push

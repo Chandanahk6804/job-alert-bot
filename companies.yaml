@@ -1,0 +1,27 @@
+# List of companies to poll via their ATS's public API.
+# ats: "greenhouse" or "lever"
+# token: the company's board token, found in their careers page URL:
+#   Greenhouse: https://job-boards.greenhouse.io/<TOKEN>        -> token is <TOKEN>
+#   Lever:      https://jobs.lever.co/<TOKEN>                    -> token is <TOKEN>
+#
+# HOW TO ADD A COMPANY (2 minutes):
+# 1. Google "<company name> careers" and open their jobs page.
+# 2. If the URL redirects to job-boards.greenhouse.io/... or boards.greenhouse.io/...,
+#    copy the segment right after that as the token, set ats: greenhouse.
+# 3. If the URL redirects to jobs.lever.co/..., copy the segment after that as the
+#    token, set ats: lever.
+# 4. If it's neither (custom career site, Workday, Darwinbox, etc.), it can't be
+#    added here yet — see README for why.
+
+companies:
+  - name: Razorpay
+    ats: greenhouse
+    token: razorpaysoftwareprivatelimited
+
+  # Add more below, e.g.:
+  # - name: Postman
+  #   ats: greenhouse
+  #   token: postman
+  # - name: SomeStartup
+  #   ats: lever
+  #   token: somestartup
